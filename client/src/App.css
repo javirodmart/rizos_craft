@@ -1,0 +1,78 @@
+/* Nav Bar */
+.navbar {
+  background: #541E35;
+  height: max-content;
+  top: 0;
+  width: 100%;
+  position: fixed;
+}
+
+.brand {
+  font-size: 6vh !important;
+}
+
+.nav-link {
+  border-radius: 5vh;
+  font-size: 3vh !important;
+}
+
+.nav-link:hover {
+  background-color: #694F5D;
+  border-radius: 5vh;
+  color: #BFD3C1;
+  width: fit-content;
+}
+
+.active {
+  color: #FFE5D4 !important;
+}
+
+.search-bar{
+  width: fit-content;
+  height: fit-content;
+  border-radius: 20vh;
+  border-color: none;
+  text-decoration: none;
+  border-style: hidden;
+ 
+}
+
+.form-inputs i{
+  position:absolute;
+  right:10px;
+  top:15px;
+}
+
+.shop-bag{
+  background-color:#694F5D;
+  color:#BFD3C1;
+  height:50px;
+  width:50px;
+  font-size:25px;
+  display:flex;
+  border-radius:50%;
+  align-items:center;
+  justify-content:center;
+}
+
+.qty{
+  font-size:12px;
+  color: #FFE5D4;
+}
+
+.col-md-2{
+ margin-left: 10vh;
+}
+
+.cards{
+  text-align: center;
+}
+
+.item-card {
+  display: inline-block !important;
+  margin: 10px !important;
+}
+
+ .item-button{
+ text-align: center;
+}
