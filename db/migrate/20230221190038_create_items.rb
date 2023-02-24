@@ -3,7 +3,7 @@ class CreateItems < ActiveRecord::Migration[7.0]
     create_table :items do |t|
       t.string :name
       t.float :price
-      t.string :image
+      t.string :img_url
       t.string :description
 
       t.timestamps

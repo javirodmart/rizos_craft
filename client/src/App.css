@@ -76,3 +76,42 @@
  .item-button{
  text-align: center;
 }
+
+.modal-90w{
+  width: 500vh !important;
+}
+
+.hide{
+  display: none;
+}
+
+label{
+  color: #541E35 !important;
+  margin-bottom: 2.5vh;
+}
+input {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  background-color: #eee;
+}
+
+form input[type=submit]:hover{
+  background-color: #694F5D ;
+  color: #eee;
+}
+
+.no-outline:focus {
+  outline: none;
+  border: none;
+}
+.form{
+  text-align: center;
+}
+
+.modal-content {
+  color: #541E35 !important;
+  border-color: #694F5D !important;
+  border-width: 10px !important;
+}
