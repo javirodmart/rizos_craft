@@ -1,34 +1,33 @@
 import { Link } from "react-router-dom"
-import { Modal } from "react-bootstrap"
-import React, { useState } from "react"
+import { Modal, Button } from "react-bootstrap"
+import React, { useState, useContext, useEffect } from "react"
 import AddItem from "./AddItem";
+import Me from "../assets/me.png"
+import { UserContext } from "../context/UserContext";
 
 const Home = () => {
+    const user = useContext(UserContext)
     const [show, setShow] = useState(false);
+    
+   
     return (
         <>
-            {/* <h1>Hello</h1>
-        <Link to="/add_item"></Link> */}
-            <span onClick={() => setShow(true)} className="shop-bag"><i className="fa fa-shopping-bag"></i></span>
-            <div className="d-flex flex-column ms-2">
+        
+            <br></br>
+            <div className="user-name">
+                <h1>Welcome  {user.user.first_name}</h1>
+            </div>
+            
+            <div className="user-profile">
+                <div className="user-img-card">
+                    <img className="user-img" src={Me} />
+                    <h2>{user.user.first_name} {user.user.last_name} </h2>
+                    <p>{user.user.email}</p>
+                    {user.user.admin ? <p>Admin</p> : null}
+                    <button >Edit profile</button>
 
-                <Modal
-                    size="xl"
-                    show={show}
-                    onHide={() => setShow(false)}
-                    dialogClassName="modal-90w"
-                    aria-labelledby="example-custom-modal-styling-title"
-                    variant="primary"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title id="example-custom-modal-styling-title">
-                            Product
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <AddItem />
-                    </Modal.Body>
-                </Modal>
+                </div>
+
             </div>
 
 

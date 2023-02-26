@@ -23,7 +23,7 @@ class CartsController < ApplicationController
 
   def total_price
     cart = self.find(params[:id])
-    render json: cart, serializer: CartWithItemSerializer
+    render json: cart
   end
 
 end

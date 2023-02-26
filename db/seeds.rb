@@ -9,4 +9,5 @@ puts "seeding"
 
 User.create(first_name:"Javier",last_name:"Rodriguez",email:"javi@gmail.com",password:"123",password_confirmation:"123",admin:true)
 
+
 puts "done seeding"

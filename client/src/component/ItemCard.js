@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext } from "react"
 import { Card, Button } from "react-bootstrap"
 import { Link, useHistory } from "react-router-dom"
-import { UserContext } from "../User";
+import { UserContext } from "../context/UserContext"
 
-const ItemCard = ({ items, id, name, price, image, description, handelProduct }) => {
+const ItemCard = ({ items, id, name, price, image, description, handleDeleteItem,handelItemCart }) => {
     const history = useHistory()
     const user = useContext(UserContext);
-    const userId = user.id
+    const userId = user.user.id
     const [added, setAdded] = useState(false)
     const [formData, setFormData] = useState({
         user_id: userId,
@@ -25,34 +25,35 @@ const ItemCard = ({ items, id, name, price, image, description, handelProduct })
         })
             .then(res => {
                 if (res.ok) {
-                    res.json().then((data) => alert("Added To Cart"))
+                    res.json().then((data) => (alert("Added To Cart")))
                 } else {
                 }
             })
     }
-    const deleteFromCart = () =>{
-        fetch(`items/${items.id}`,{
-            method: "DELETE"})
-    }
+    const deleteItem = () =>{
+        fetch(`items/${id}`,{
+            method: "DELETE"
+        })
+            handleDeleteItem(id)
+        }
+        console.log(id)
     return (
 
         <>
             <div className="item-card" style={{ width: '20rem' }}>
-                <Card border="warning">
+                <Card border="danger">
                     <Card.Body >
                         <Card.Title id="true">{name}</Card.Title>
-                        <img className="img" variant="top" src={items.img_url} />
-                        <Card.Text>
-                            <p>${price}</p>
-                            <p>{description}</p>
-                        </Card.Text>
+                        <img className="item-img" variant="top" src={items.img_url} />
+                        <Card.Text> ${price} </Card.Text>
+                        <Card.Text> {description} </Card.Text>
 
                         {/* {add ? <p> &#10004;</p> : null}
         {user.admin ? <Button onClick={handleDelete} > <i class="fa fa-trash-o"></i> </Button> : null} */}
                         <div className="item-button">
                             <Link to="/items"> <button onClick={handleAdd} > <i class="fa fa-plus" style={{ fontsize: + "36px" }}></i> </button></Link>
-                            <Link> <button onClick={deleteFromCart} > <i style={{ fontsize: + "36px" }} class="fa">&#xf00d;</i> </button></Link>
-                            {added && <i className={`fa fa-check`} style={{ color: "green" }} aria-hidden="true"></i>}
+                             <button  onClick={deleteItem} > <i style={{ fontsize: + "36px" }} class="fa">&#xf00d;</i> </button>
+                         
                         </div>
 
                     </Card.Body>

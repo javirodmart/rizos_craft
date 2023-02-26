@@ -2,35 +2,49 @@ import { Container, Navbar, Nav, NavItem, Button, NavbarBrand, Modal } from "rea
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarToggle from "react-bootstrap/esm/NavbarToggle";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import Me from "../assets/me.png"
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 
 
-const Navigation = ({ itemsNumber, totalPrice }) => {
+const Navigation = ({ itemsNumber, totalPrice,updateUser }) => {
 
     const [products, setProducts] = useState("Products")
+    const user = useContext(UserContext)
     const [show, setShow] = useState(false);
-
+    const history = useHistory()
+console.log(itemsNumber)
 
     console.log(itemsNumber)
     const navInfo = [
         {
             id: 1,
-            path: `/home`,
+            path: `/home/${user.user.id}`,
             name: `Home`
         },
         {
             id: 2,
-            path: `items`,
+            path: `/all_items`,
             name: `Items`,
         }
     ]
     // if (itemsNumber === 1) {
     //     setProducts("Product")
-    // }
-
+    const handleLogOut = () => {
+        // DELETE `/logout`
+        fetch('/logout', {
+            method: 'DELETE'
+        })
+            .then(res => {
+                if (res.ok) {
+                    history.push('/login')
+                    updateUser(null)
+                }
+            })
+        updateUser(null)
+    }
 
     return (
         <>
@@ -84,8 +98,8 @@ const Navigation = ({ itemsNumber, totalPrice }) => {
                                     </Modal>
 
 
-                                    <span className="qty">{itemsNumber} Product</span>
-                                    <span className="qty">${totalPrice}</span>
+                                    {/* <span className="qty">{itemsNumber} Product</span> */}
+                                    {/* <span className="qty">${totalPrice}</span> */}
                                 </div>
                             </div>
                         </div>
@@ -96,7 +110,8 @@ const Navigation = ({ itemsNumber, totalPrice }) => {
                                 </div>
                             </li>
                             <li className="nav-item">
-                                <a href="#" className="nav-link d-flex align-items-center" data-abc="true"><span>Javier Rodriguez</span><i className='bx bxs-chevron-down'></i></a>
+                                <a href="/home" className="nav-link d-flex align-items-center" data-abc="true"><span>{user.user.first_name} {user.user.last_name}</span><i className='bx bxs-chevron-down'></i></a>
+                                <Button className="logout" style={{ color: "black" }} onClick={handleLogOut}>Sign Out</Button>
                             </li>
 
                         </ul>

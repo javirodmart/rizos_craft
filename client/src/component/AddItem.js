@@ -1,13 +1,15 @@
 import React, { useState } from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form } from "react-bootstrap";
 
-const AddItem = () => {
+
+const AddItem = ({ handelNewItem,item }) => {
     const [errors, setErrors] = useState([]);
     const [name, setName] = useState("")
     const [price, setPrice] = useState("")
     const [img, setImg] = useState("")
     const [description, setDescription] = useState("")
+    const [added, setAdded] = useState(false)
+    const [Loading, setLoading] = useState(false)
 
     const [formData, setFormData] = useState({
         name: "",
@@ -42,13 +44,13 @@ const AddItem = () => {
         setDescription(e.target.value)
     }
 
-    
+
 
     console.log(img)
     const handleSubmit = (e) => {
         e.preventDefault()
-
-
+        setLoading(true)
+        setAdded(false)
         const newData = formData
         fetch(`/items`, {
             method: "POST",
@@ -56,30 +58,37 @@ const AddItem = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name:name,
-                price:price,
-                img_url:img,
-                description:description}),
+                name: name,
+                price: price,
+                img_url: img,
+                description: description
+            }),
         })
             .then(res => {
                 if (res.ok) {
-                    res.json().then((data) => console.log(data))
+                    res.json().then((data) => handelNewItem(data),setAdded(true),setLoading(false))
                 } else {
                     res.json().then((errorData) => setErrors(errorData.errors))
                 }
+
             })
+        setName("")
+        setPrice("")
+        setImg("")
+        setDescription("")
+
     }
-    console.log(name,price,description,img)
+    console.log(item)
     const renderImage =
         img !== "" ?
             <>
-                <img src={img} />
+                <img className="preview-img" src={img} />
             </>
             :
             <><p>upload here</p></>
     return (
         <>
-            <div className="form">
+            <div className="login">
                 <h1>Add Product</h1>
                 <form onSubmit={handleSubmit}>
                     <label>
@@ -94,8 +103,10 @@ const AddItem = () => {
                     <br></br>
                     <label>
                         <br></br>
-                        <input accept='image/png, .png, .jpeg, image/jpg' type="file" name="img_url"  placeholder="Image Url" onChange={handleFile} />
-
+                        <input accept='image/png, image/jpeg, image/jpg' type="file" name="img_url" placeholder="Image Url" onChange={handleFile} />
+                        <br></br>
+                        <br></br>
+                        {renderImage}
                     </label>
                     <br></br>
                     <label>
@@ -104,6 +115,8 @@ const AddItem = () => {
                     </label>
                     <br></br>
                     <input type="submit" value="submit" />
+                    {added ? <h3 style={{ color: "green" }} >Successful Added</h3> : null}
+                    {Loading ? <h4>Loading....</h4> : null}
 
                 </form>
             </div>

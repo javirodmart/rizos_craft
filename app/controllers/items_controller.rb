@@ -3,11 +3,14 @@ class ItemsController < ApplicationController
         render json: Item.all
     end
     
-
+    def show 
+        item = Item.find(params[:id])
+        render json: item, only: [:name,:price,:img_url,:description]
+    end
 
     def create
         item = Item.create(item_parmas)
-        render json: item, status: :created
+        render json: item, only: [:name,:price,:img_url,:description], status: :created
     end
 
     def destroy 

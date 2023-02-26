@@ -1,10 +1,12 @@
 /* Nav Bar */
 .navbar {
-  background: #541E35;
+  background: rgb(52,250,68);
+  background: radial-gradient(circle, rgba(52,250,68,1) 0%, rgba(219,15,156,1) 100%);
   height: max-content;
   top: 0;
   width: 100%;
   position: fixed;
+  color: black !important;
 }
 
 .brand {
@@ -14,17 +16,18 @@
 .nav-link {
   border-radius: 5vh;
   font-size: 3vh !important;
+  color: black !important;
 }
 
 .nav-link:hover {
   background-color: #694F5D;
   border-radius: 5vh;
-  color: #BFD3C1;
+  color: black;
   width: fit-content;
 }
 
 .active {
-  color: #FFE5D4 !important;
+  color: black !important;
 }
 
 .search-bar{
@@ -44,8 +47,7 @@
 }
 
 .shop-bag{
-  background-color:#694F5D;
-  color:#BFD3C1;
+  color:black;
   height:50px;
   width:50px;
   font-size:25px;
@@ -57,7 +59,7 @@
 
 .qty{
   font-size:12px;
-  color: #FFE5D4;
+  color: black;
 }
 
 .col-md-2{
@@ -78,7 +80,7 @@
 }
 
 .modal-90w{
-  width: 500vh !important;
+  width: 200vh !important;
 }
 
 .hide{
@@ -89,17 +91,30 @@ label{
   color: #541E35 !important;
   margin-bottom: 2.5vh;
 }
-input {
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-left-style: hidden;
-  border-bottom-style: groove;
-  background-color: #eee;
+input,.btn-primary {
+  border-top-style: hidden !important;
+  border-right-style: hidden !important;
+  border-left-style: hidden !important;
+  border-bottom-style: groove !important;
+  background-color: #eee !important;
+  color:#541E35 !important;
+  
+}
+form input[type=submit]{
+  border-radius: 15%;
 }
 
-form input[type=submit]:hover{
-  background-color: #694F5D ;
-  color: #eee;
+
+
+
+form input[type=submit]:hover,.btn-primary:hover{
+  background-color: #694F5D !important ;
+  color: #eee !important;
+}
+
+.btn-primary{
+  float: right;
+  margin-right: 30vh;
 }
 
 .no-outline:focus {
@@ -112,6 +127,89 @@ form input[type=submit]:hover{
 
 .modal-content {
   color: #541E35 !important;
-  border-color: #694F5D !important;
+  border-color:#541E35 !important;
   border-width: 10px !important;
 }
+
+.item-img{
+  width: 100%;
+}
+
+.preview-img{
+  width: 20%;
+}
+
+.user-profile{
+width: fit-content;
+margin-top: -3%;
+}
+
+.user-img-card{
+width: 46vh;
+height: 46vh;
+background: #541E35;
+border-radius: 200px;
+text-align: center;
+color: #eee;
+}
+
+.user-img-card > button{
+  border-top-style: hidden !important;
+  border-right-style: hidden !important;
+  border-left-style: hidden !important;
+  border-bottom-style: groove !important;
+  background-color: #541E35 !important;
+  color:#eee !important;
+}
+
+.user-img-card > button:hover{
+  background-color: #eee !important;
+  color:#541E35 !important;
+}
+
+
+.user-img{
+width: 40%;
+border-radius: 10vh;
+text-align: center;
+}
+
+.user-name{
+  width: fit-content;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.add-item-button{
+  position:absolute ;
+  top:15%;
+  left:70%;
+  width: fit-content !important;
+  
+}
+
+.login{
+  text-align: center;
+  border-top-style:solid !important;
+  border-right-style:solid !important;
+  border-left-style:solid !important;
+  border-bottom-style: solid !important;
+  border-width: 10px;
+  border-image: linear-gradient(rgba(52,250,68,1) 0%, rgba(219,15,156,1)) 30;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:5%;
+  padding: 3%;
+
+
+
+}
+
+.form{
+ 
+  margin: auto;
+}
+
+
+

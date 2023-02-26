@@ -9,9 +9,9 @@ import { UserProvider , UserContext} from "../src/User";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-  <UserProvider>
+ 
     <App />
-  </UserProvider>
+
     
   </BrowserRouter>
   

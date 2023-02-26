@@ -6,7 +6,14 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-
+  get '/authorized_user', to: 'users#show'
+  get '/loginWines' , to: 'sessions#index'
   get "/all_items", to: "carts#all_items"
-  get "/total_price/:id",to: "users#total_price"
+  get "/total_price",to: "users#total_price"
+ 
+
+  post "/login", to: "sessions#create"
+
+  delete "/logout", to: "sessions#destroy"
+
 end
