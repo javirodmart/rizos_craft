@@ -13,6 +13,8 @@ gem "sqlite3", "~> 1.4"
 gem "puma", "~> 5.0"
 gem "faker"
 gem 'active_model_serializers'
+gem 'dotenv-rails', groups: [:development, :test]
+
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -48,3 +50,5 @@ group :development do
   # gem "spring"
 end
 
+
+gem "stripe", "~> 8.3"

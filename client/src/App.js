@@ -10,6 +10,8 @@ import Login from './component/Login';
 import AddItem from './component/AddItem';
 import GuestNav from './component/GuestNav';
 import { UserContext } from './context/UserContext';
+import CartItem from './component/CartItem';
+import Payment from  './component/Cart';
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
   const [search,setSearch] = useState("")
   const [user,setUser] = useState([])
   const history = useHistory()
+  const [carts,setCarts] = useState([])
   // const updateUser = (user) => setUser(user)
   //  Fetch
 
@@ -38,7 +41,7 @@ function App() {
       }, []);
 
       const updateUser = (user) => setUser(user)
-console.log(user)
+
   useEffect(() => {
     fetch(`/items`)
       .then(res => res.json())
@@ -51,17 +54,35 @@ console.log(user)
       .then(data => (setItemsNumber(data)))
   }, [])
 
-  useEffect(() => {
-    fetch(`total_price/1`)
-      .then(res => res.json())
-      .then(data => (setTotalPrice(data)))
-  }, [])
+  // useEffect(() => {
+  //   fetch(`total_price/1`)
+  //     .then(res => res.json())
+  //     .then(data => (setTotalPrice(data)))
+  // }, [])
+  
+  // useEffect(() => {
+  //   fetch(`total_price/1`)
+  //     .then(res => res.json())
+  //     .then(data => (setTotalPrice(data)))
+  // }, [])
 
-console.log(totalPrice)
+  
+
 
 
   const handelNewItem = (newItem) => {
     setItem([ ...item, newItem] )
+  }
+
+  function handelUpdateUser(updateUser) {
+    const updateUsers = user.user.map((item) => {
+      if (item.id === updateUser.id) {
+        return updateUser;
+      } else {
+        return item;
+      }
+    });
+    setUser(updateUsers)
   }
 
   const handelItemCart = (newItem) => {
@@ -114,10 +135,12 @@ if (!user) return(
     <>
 <UserContext.Provider value={{user,setUser}}>
 <Navigation itemsNumber={itemsNumber} updateUser={updateUser} totalPrice={totalPrice} />
+
       <Switch>
       
       <Route path={`/home/${user.id}`}>
-          <Home />
+          <Home updateUser={updateUser}  handelUpdateUser={ handelUpdateUser} />
+          
         </Route>
 
         <Route path="/all_items">
@@ -126,6 +149,10 @@ if (!user) return(
 
         <Route path="/add_item">
           <AddItem item={item} handelNewItem={handelNewItem}/>
+        </Route>
+
+        <Route path="/cart_items">
+          <CartItem />
         </Route>
 
       </Switch>

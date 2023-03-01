@@ -1,29 +1,28 @@
 import ItemCard from "./ItemCard"
-import { Modal,Button } from "react-bootstrap"
+import { Modal, Button } from "react-bootstrap"
 import { useState } from "react"
 import AddItem from "./AddItem"
-const Item = ({ item,isLoading,setSearch ,handelNewItem, handleDeleteItem,handelItemCart }) => {
-    const [show,setShow] = useState()
-  
-    
-    const itemArray = item.length && item.map((items)=>{
-       return <ItemCard key={items.id}
-       id={items.id}
-        name={items.name}
-        price={items.price}
-        image={items.img_url}
-        description={items.description}
-        items={items}
-        handleDeleteItem={ handleDeleteItem}
-       
-       
-        /> 
-    }) 
-
-    
+const Item = ({ item, isLoading, setSearch, handelNewItem, handleDeleteItem, handelItemCart }) => {
+    const [show, setShow] = useState()
 
 
-    console.log(item)
+    const itemArray = item.length && item.map((items) => {
+        return <ItemCard key={items.id}
+            id={items.id}
+            name={items.name}
+            price={items.price}
+            image={items.img_url}
+            description={items.description}
+            items={items}
+            handleDeleteItem={handleDeleteItem}
+
+
+        />
+    })
+
+
+console.log(item)
+
     return (
         <>
             <h1>For Sale </h1>
@@ -48,9 +47,9 @@ const Item = ({ item,isLoading,setSearch ,handelNewItem, handleDeleteItem,handel
                     </Modal.Body>
                 </Modal>
             </div>
-            <input className="search-bar" type="text" placeholder="Search.." on onChange={(e)=>{setSearch(e.target.value)}}></input>
+            <input className="search-bar" type="text" placeholder="Search.." on onChange={(e) => { setSearch(e.target.value) }}></input>
             <div>{isLoading ? <h1>Loading</h1> : itemArray}</div>
-            
+
         </>
     )
 }

@@ -5,7 +5,9 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :last_name
       t.string :email
       t.string :password_digest
+      t.string :img_url
       t.boolean :admin
+      t.string :stripe_customer_id
      
 
       t.timestamps

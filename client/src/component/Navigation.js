@@ -4,28 +4,32 @@ import NavbarToggle from "react-bootstrap/esm/NavbarToggle";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import { NavLink, useHistory } from "react-router-dom";
 import Me from "../assets/me.png"
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import CartItem from "./CartItem";
+import Cart from "./Cart";
+import CheckOutForm from "./CheckOutForm"
 
 
 
-const Navigation = ({ itemsNumber, totalPrice,updateUser }) => {
+const Navigation = ({ itemsNumber, totalPrice, updateUser }) => {
 
     const [products, setProducts] = useState("Products")
     const user = useContext(UserContext)
     const [show, setShow] = useState(false);
     const history = useHistory()
-console.log(itemsNumber)
 
-    console.log(itemsNumber)
+
     const navInfo = [
         {
             id: 1,
+            id2: 2,
             path: `/home/${user.user.id}`,
             name: `Home`
         },
         {
-            id: 2,
+            id: 3,
+            id2: 4,
             path: `/all_items`,
             name: `Items`,
         }
@@ -46,6 +50,7 @@ console.log(itemsNumber)
         updateUser(null)
     }
 
+
     return (
         <>
 
@@ -60,7 +65,7 @@ console.log(itemsNumber)
                             {navInfo.map((item) => (
                                 <>
                                     <NavItem key={item.id} className="nav-link">
-                                        <NavLink className="nav-link" to={item.path} key={item.id}>
+                                        <NavLink key={item.id2} className="nav-link" to={item.path}>
                                             {item.name}
                                         </NavLink>
                                     </NavItem>
@@ -81,19 +86,12 @@ console.log(itemsNumber)
                                     >
                                         <Modal.Header closeButton>
                                             <Modal.Title id="example-custom-modal-styling-title">
-                                                Cart
+                                                {user.user.first_name}`s Cart
                                             </Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body>
-                                            <p>
-                                                Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae unde
-                                                commodi aspernatur enim, consectetur. Cumque deleniti temporibus
-                                                ipsam atque a dolores quisquam quisquam adipisci possimus
-                                                laboriosam. Quibusdam facilis doloribus debitis! Sit quasi quod
-                                                accusamus eos quod. Ab quos consequuntur eaque quo rem! Mollitia
-                                                reiciendis porro quo magni incidunt dolore amet atque facilis ipsum
-                                                deleniti rem!
-                                            </p>
+                                            <Cart />
+                                        
                                         </Modal.Body>
                                     </Modal>
 
@@ -104,18 +102,18 @@ console.log(itemsNumber)
                             </div>
                         </div>
                         <ul className="navbar-nav d-flex align-items-center">
-                            <li className="nav-item">
+                            <li key="1" className="nav-item">
                                 <div className="d-flex flex-row">
                                     <img src={Me} className="rounded-circle" width="30" />
                                 </div>
                             </li>
-                            <li className="nav-item">
+                            <li key='2' className="nav-item">
                                 <a href="/home" className="nav-link d-flex align-items-center" data-abc="true"><span>{user.user.first_name} {user.user.last_name}</span><i className='bx bxs-chevron-down'></i></a>
-                                <Button className="logout" style={{ color: "black" }} onClick={handleLogOut}>Sign Out</Button>
                             </li>
 
                         </ul>
                     </Navbar.Collapse>
+                    <Button className="logout" style={{ color: "black" }} onClick={handleLogOut}>Sign Out</Button>
                 </Container>
             </Navbar >
         </>

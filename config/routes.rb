@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :charges
   resources :carts
   resources :items
   resources :users
@@ -10,8 +11,9 @@ Rails.application.routes.draw do
   get '/loginWines' , to: 'sessions#index'
   get "/all_items", to: "carts#all_items"
   get "/total_price",to: "users#total_price"
- 
+  get "/user_carts", to: "carts#user_cart"
 
+  post "/products", to: "charges#create_products"
   post "/login", to: "sessions#create"
 
   delete "/logout", to: "sessions#destroy"

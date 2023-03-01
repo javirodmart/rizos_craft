@@ -210,6 +210,29 @@ text-align: center;
  
   margin: auto;
 }
+.cart-info{
+display: inline-block;
+width: fit-content;
+padding-left: 20px;
+}
+.cart-img > img {
+  width:12% ;
+  display: inline-block;
+}
 
+.cart-img{
+  display: inline-block;
+}
+.cart-item {
+  display: inline-block;
+  border: solid;
+  margin-bottom: 20px;
+  
+}
+
+.pay-button{
+  color:red;
+  float: right;
+}
 
 

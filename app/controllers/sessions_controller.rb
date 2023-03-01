@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-    skip_before_action :authorized_user, only:[:create,:index]
+    skip_before_action :authorized_user, only:[:create]
 
     def index
         render json: Wine.all,except: [:created_at, :updated_at]

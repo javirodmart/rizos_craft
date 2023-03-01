@@ -1,6 +1,9 @@
 class CartsController < ApplicationController
+  def index
+    render json: Cart.all
+end
 
-  def show 
+  def show
     cart = Cart.find(params[:id])
     render json: cart,status: :ok
   end
@@ -16,15 +19,7 @@ class CartsController < ApplicationController
     head :no_content
   end
 
-  def all_items
-      cart = Cart.count
-      render json: cart ,status: :ok
-  end
-
-  def total_price
-    cart = self.find(params[:id])
-    render json: cart
-  end
+  
 
 end
 

@@ -35,6 +35,7 @@ function SignUp({ updateUser }) {
                     res.json().then(user => {
                         updateUser(user)
                         history.push(`/home`)
+                        console.log(user)
                     })
                 } else {
                     res.json().then((errorData) => setErrors(errorData.errors))

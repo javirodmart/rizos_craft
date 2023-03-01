@@ -9,10 +9,10 @@ const ItemCard = ({ items, id, name, price, image, description, handleDeleteItem
     const userId = user.user.id
     const [added, setAdded] = useState(false)
     const [formData, setFormData] = useState({
-        user_id: userId,
+        user_id: user.user.id,
         item_id: items.id
     })
-    console.log(id)
+    
     const handleAdd = (e) => {
         e.preventDefault()
         console.log(formData)
@@ -36,12 +36,12 @@ const ItemCard = ({ items, id, name, price, image, description, handleDeleteItem
         })
             handleDeleteItem(id)
         }
-        console.log(id)
+       
     return (
 
         <>
             <div className="item-card" style={{ width: '20rem' }}>
-                <Card border="danger">
+                <Card id={id} border="danger">
                     <Card.Body >
                         <Card.Title id="true">{name}</Card.Title>
                         <img className="item-img" variant="top" src={items.img_url} />

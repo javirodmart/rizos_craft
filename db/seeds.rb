@@ -7,7 +7,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 puts "seeding"
 
-User.create(first_name:"Javier",last_name:"Rodriguez",email:"javi@gmail.com",password:"123",password_confirmation:"123",admin:true)
+User.create(first_name:"Javier",last_name:"Rodriguez",email:"javi@gmail.com",password:"123",password_confirmation:"123",img_url:"http://localhost:4000/static/media/me.ccffe15462f7af55fe8e.png",admin:true)
 
 
 puts "done seeding"

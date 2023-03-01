@@ -1,22 +1,20 @@
-import React, { useState } from "react"
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import { UserContext } from "../context/UserContext";
 
 
-const AddItem = ({ handelNewItem,item }) => {
+function EditProfile({ updatedUser, user, id }) {
     const [errors, setErrors] = useState([]);
-    const [name, setName] = useState("")
-    const [price, setPrice] = useState(0)
-    const [img, setImg] = useState("")
-    const [description, setDescription] = useState("")
+    const [first_name, setFirst_name] = useState(user.first_name)
+    const [last_name, setLast_name] = useState(user.last_name)
+    const [img, setImg] = useState('')
+    const [email, setEmail] = useState(user.email)
     const [added, setAdded] = useState(false)
     const [Loading, setLoading] = useState(false)
+    const userUpdate = (users) => {
+        updatedUser(users)
+    }
 
-    const [formData, setFormData] = useState({
-        name: "",
-        price: "",
-        img_url: "",
-        description: ""
-    })
 
     function handleFile(e) {
         const file = e.target.files[0]
@@ -27,69 +25,55 @@ const AddItem = ({ handelNewItem,item }) => {
         }
         reader.readAsDataURL(file)
     }
-   
+    
 
 
-    const handleName = (e) => {
+    const handleFirstName = (e) => {
         e.preventDefault()
-        setName(e.target.value)
+        setFirst_name(e.target.value)
     }
-    const handlePrice = (e) => {
+    const handleLastName = (e) => {
         e.preventDefault()
-        setPrice(e.target.value)
-    }
-
-    const handleDescription = (e) => {
-        e.preventDefault()
-        setDescription(e.target.value)
+        setLast_name(e.target.value)
     }
 
+    const handleEmail = (e) => {
+        e.preventDefault()
+        setEmail(e.target.value)
+    }
 
 
-  
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
         setAdded(false)
-        const newData = formData
-        fetch(`/items`, {
-            method: "POST",
+        fetch(`/users/${id}`, {
+            method: "PATCH",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: name,
-                price: price,
+                first_name: first_name,
+                last_name: last_name,
                 img_url: img,
-                description: description
+                email: email,
+
             }),
         })
             .then(res => {
                 if (res.ok) {
-                    res.json().then((data) => handelNewItem(data),setAdded(true),setLoading(false))
+                    res.json().then((data) => (setAdded(true), setLoading(false), userUpdate(data)))
                 } else {
                     res.json().then((errorData) => setErrors(errorData.errors))
                 }
 
             })
-    
 
-        // fetch(`/charges`, {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         name: name,
-        //         default_price_data: price,
-        //         images: img,
-        //         description: description,
-                
-        //     }),
-        // })
 
     }
-    
+
     const renderImage =
         img !== "" ?
             <>
@@ -104,12 +88,12 @@ const AddItem = ({ handelNewItem,item }) => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         <br></br>
-                        <input type="text" name="name" placeholder="Name" value={name} onChange={handleName} />
+                        <input type="text" name="first_name" placeholder="Name" value={first_name} onChange={handleFirstName} />
                     </label>
                     <br></br>
                     <label>
                         <br></br>
-                        <input placeholder="Price" type="number" name="price" value={price} onChange={handlePrice} />
+                        <input placeholder="Last Name" type="text" name="last_name" value={last_name} onChange={handleLastName} />
                     </label>
                     <br></br>
                     <label>
@@ -122,18 +106,18 @@ const AddItem = ({ handelNewItem,item }) => {
                     <br></br>
                     <label>
                         <br></br>
-                        <input type="text" name="description" placeholder="description" value={description} onChange={handleDescription} />
+                        <input type="text" name="Email" placeholder="Email" value={email} onChange={handleEmail} />
                     </label>
                     <br></br>
                     <input type="submit" value="submit" />
                     {added ? <h3 style={{ color: "green" }} >Successful Added</h3> : null}
                     {Loading ? <h4>Loading....</h4> : null}
-
                 </form>
+                {errors ? <div>{errors}</div> : null}
             </div>
 
         </>
     )
 }
 
-export default AddItem
+export default EditProfile
