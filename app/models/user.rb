@@ -1,8 +1,10 @@
 class User < ApplicationRecord
     has_secure_password
-    validates :email, uniqueness: :true 
     has_many :carts
+    has_many :purchases
     has_many :items, through: :carts
+
+    
     def to_s 
         email
     end

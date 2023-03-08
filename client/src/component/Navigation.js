@@ -9,22 +9,28 @@ import { UserContext } from "../context/UserContext";
 import CartItem from "./CartItem";
 import Cart from "./Cart";
 import CheckOutForm from "./CheckOutForm"
+import defaultPic from "../assets/user_1.png"
+import { Link } from "react-router-dom";
 
 
 
-const Navigation = ({ itemsNumber, totalPrice, updateUser }) => {
+const Navigation = ({ itemsNumber, totalPrice, updateUser, userCarts, handleDeleteCart }) => {
 
     const [products, setProducts] = useState("Products")
     const user = useContext(UserContext)
     const [show, setShow] = useState(false);
     const history = useHistory()
+    const [img,setImg] = useState("")
+    const img_url = user.user.img_url
+    const [total,setTotal] = useState()
 
+    const userId = user.user.id
 
     const navInfo = [
         {
             id: 1,
             id2: 2,
-            path: `/home/${user.user.id}`,
+            path: `/`,
             name: `Home`
         },
         {
@@ -49,7 +55,15 @@ const Navigation = ({ itemsNumber, totalPrice, updateUser }) => {
             })
         updateUser(null)
     }
+    function handleTotal() {
+        fetch(`/total/${user.user.id}`)
+          .then(r => r.json())
+          .then(data => setTotal(data))
+      }
 
+      useEffect(()=>{
+        handleTotal()
+      },[])
 
     return (
         <>
@@ -90,31 +104,35 @@ const Navigation = ({ itemsNumber, totalPrice, updateUser }) => {
                                             </Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body>
-                                            <Cart />
-                                        
+                                            <Cart setShow={setShow} total={total} handleTotal={handleTotal} handleDeleteCart={handleDeleteCart} userCarts={userCarts} />
+
                                         </Modal.Body>
                                     </Modal>
 
 
                                     {/* <span className="qty">{itemsNumber} Product</span> */}
-                                    {/* <span className="qty">${totalPrice}</span> */}
+                                    <span className="qty"> Total: ${total}</span>
                                 </div>
                             </div>
                         </div>
                         <ul className="navbar-nav d-flex align-items-center">
                             <li key="1" className="nav-item">
                                 <div className="d-flex flex-row">
-                                    <img src={Me} className="rounded-circle" width="30" />
+                                    <img src={user.user.img_url} className="rounded-circle" width="30" />
                                 </div>
                             </li>
                             <li key='2' className="nav-item">
-                                <a href="/home" className="nav-link d-flex align-items-center" data-abc="true"><span>{user.user.first_name} {user.user.last_name}</span><i className='bx bxs-chevron-down'></i></a>
+                                <Link to="/" className="nav-link d-flex align-items-center" data-abc="true"><span>{user.user.first_name} {user.user.last_name}</span><i className='bx bxs-chevron-down'></i></Link>
                             </li>
 
                         </ul>
                     </Navbar.Collapse>
-                    <Button className="logout" style={{ color: "black" }} onClick={handleLogOut}>Sign Out</Button>
+                   
+
                 </Container>
+                 <div className="logout">
+                        <Button  style={{ color: "black" }} onClick={handleLogOut}>SignOut</Button>
+                    </div>
             </Navbar >
         </>
     )

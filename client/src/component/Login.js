@@ -32,7 +32,7 @@ function Login({ updateUser }) {
             .then(res => {
                 if (res.ok) {
                     res.json().then(user =>
-                        (updateUser(user), history.push(`/home/${user.name}`))
+                        (updateUser(user), history.push(`/`))
                     )
                 } else {
                     res.json().then(json => setErrors(json.errors))

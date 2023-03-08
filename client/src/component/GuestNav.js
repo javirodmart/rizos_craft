@@ -2,13 +2,13 @@ import { Container, Navbar, Nav, NavItem, Button, NavbarBrand, Modal } from "rea
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarToggle from "react-bootstrap/esm/NavbarToggle";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
-import { NavLink, useHistory } from "react-router-dom";
+import React, { NavLink, useHistory } from "react-router-dom";
 import Me from "../assets/me.png"
 import { useEffect, useState } from "react";
 
 
 
-const GuestNav = ({ itemsNumber, totalPrice,updateUser }) => {
+const GuestNav = ({updateUser}) => {
 
     const [products, setProducts] = useState("Products")
     const [show, setShow] = useState(false);
@@ -19,7 +19,7 @@ const GuestNav = ({ itemsNumber, totalPrice,updateUser }) => {
     }
 
 
-    console.log(itemsNumber)
+   
     const navInfo = [
         {
             id: 1,

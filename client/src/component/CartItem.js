@@ -1,37 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import Payment from "./Cart";
 
 
-const CartItem = () => {
-    const user = useContext(UserContext)
-    console.log(user.user.items[0].id)
-    const userCart = user.user.items
+const CartItem = ({  handleTotal,id, name, price, img, description , handleDeleteCart}) => {
+
+  
+    function handleDelete() {
+        fetch(`/carts/${id}`, { method: "DELETE" })
+        handleTotal()
+        handleDeleteCart(id)
+    }
+ 
     return (
         <>
-            <div>
-                {userCart.length && userCart.map((items) => {
-                    return <>
+            <div className="checkout-item">
+                <div className="checkout-img">
+                  <img className="checkout-img" src={img}/>
+                </div>
+                <div className="checkout-info">
+                <h1>{name}</h1>
+                <h4>{description}</h4>
+                <h6>${price}</h6>
+                <button onClickCapture={handleDelete}>Remove From Checkout</button>
+                </div>
 
-                        <div className="cart-item">
-
-                            <div className="cart-img">
-                                <img src={items.img_url} />
-                                <span className="cart-info">
-                                    <h1>{items.name}</h1>
-                                    <h6>{items.description}</h6>
-                                    <h6>${items.price}</h6>
-                                <span>...fdfsdf</span>
-                                </span>
-                            </div>
-
-
-                        </div>
-                    </>
-                })}
-                <button className="pay-button">Proceed To Payment</button>
-              
-            </div>
+              </div>
 
         </>
 

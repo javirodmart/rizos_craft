@@ -1,62 +1,72 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react"
 import CartItem from "./CartItem";
+import { UserContext } from "../context/UserContext";
+import CheckoutForm from "./CheckOutForm";
+import Pay from "./pay";
+import Home from "./Home"
+import { Link } from "react-router-dom";
 
 
 
 
-export default function Payment() {
+
+const Cart = ({setShow,handleTotal,total}) => {
+  const user = useContext(UserContext)
   const [message, setMessage] = useState("");
   const [error, setErrors] = useState([])
-  const [data,setData] = useState([])
+  const [data, setData] = useState([])
+  const [id, setId] = useState([])
+  const [userCarts,setUserCarts]= useState()
+ 
 
+  
   useEffect(() => {
+    handleTotal()
+  }, [])
+ 
+ 
+  useEffect(() => {
+    fetch(`/user_carts/${user.user.id}`)
+    .then(res => res.json())
+    .then(data => setUserCarts(data))
+  }, [])
 
-    fetch(`/charges`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: 2
-      }),
+  function handleDeleteCart(deleteCart) {
+    const updatedArray = userCarts.filter((items) => {
+      return items.id !== deleteCart
     })
-      .then(res => {
-        if (res.ok) {
-          res.json().then((data) => (setData(data)))
-        } else {
-          res.json().then((errorData) => setErrors(errorData.errors))
-        }
+    setUserCarts(updatedArray)
+  }
 
-      })
-    // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
+  const userArray = userCarts && userCarts.map((e) => {
+    return <CartItem key={e.id}
+      id={e.id}
+      name={e.name}
+      price={e.price}
+      img={e.img_url}
+      description={e.description}
+      setData={setData}
+      handleDeleteCart={handleDeleteCart}
+      handleTotal={handleTotal}
 
-    if (query.get("success")) {
-      setMessage("Order placed! You will receive an email confirmation.");
-    }
+    />
+  })
 
-    if (query.get("canceled")) {
-      setMessage(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
-    }
-  }, []);
+  return (
+    <>
+    
 
-  return message ? (
-    <section>
-      <p>{message}</p>
-    </section>
-  ) : (
-    <section>
-      <CartItem />
+      {userArray}
+  
 
       <form >
-        <button type="submit">
-         <a href={data.url}  >Checkout</a> </button>
-       
-        
+      <Link to="checkout"><button onClick={()=>{setShow(false)}} className="checkout-button" type="submit"> <h4>CheckOut</h4> </button></Link>
+        <h4 className="total">Total: ${total}</h4>
+
       </form>
       {error ? <div>{error}</div> : null}
-    </section>
-  );
+
+    </>
+  )
 }
+export default Cart

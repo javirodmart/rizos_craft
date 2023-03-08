@@ -34,7 +34,7 @@ function SignUp({ updateUser }) {
                 if (res.ok) {
                     res.json().then(user => {
                         updateUser(user)
-                        history.push(`/home`)
+                        history.push(`/`)
                         console.log(user)
                     })
                 } else {

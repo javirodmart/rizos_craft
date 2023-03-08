@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_01_083816) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_08_180342) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,6 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_01_083816) do
   create_table "carts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "item_id", null: false
+    t.string "name"
+    t.integer "price"
+    t.string "img_url"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_carts_on_item_id"
@@ -61,6 +65,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_01_083816) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "stripe_product_id"
+    t.string "stripe_price_id"
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "item_id"
+    t.index ["item_id"], name: "index_purchases_on_item_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "stripe_apis", force: :cascade do |t|
@@ -78,10 +92,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_01_083816) do
     t.string "stripe_customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "state"
+    t.string "city"
+    t.string "line1"
+    t.string "line2"
+    t.string "postal_code"
+    t.string "country"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "carts", "items"
   add_foreign_key "carts", "users"
+  add_foreign_key "purchases", "users"
 end

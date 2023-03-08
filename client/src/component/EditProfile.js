@@ -3,17 +3,15 @@ import { useHistory } from 'react-router-dom'
 import { UserContext } from "../context/UserContext";
 
 
-function EditProfile({ updatedUser, user, id }) {
+function EditProfile({setUser, setShow,user, id }) {
     const [errors, setErrors] = useState([]);
     const [first_name, setFirst_name] = useState(user.first_name)
     const [last_name, setLast_name] = useState(user.last_name)
-    const [img, setImg] = useState('')
+    const [img, setImg] = useState(user.img_url)
     const [email, setEmail] = useState(user.email)
     const [added, setAdded] = useState(false)
     const [Loading, setLoading] = useState(false)
-    const userUpdate = (users) => {
-        updatedUser(users)
-    }
+    
 
 
     function handleFile(e) {
@@ -24,6 +22,8 @@ function EditProfile({ updatedUser, user, id }) {
             setImg(e.target.result)
         }
         reader.readAsDataURL(file)
+
+        setImg(file)
     }
     
 
@@ -64,7 +64,7 @@ function EditProfile({ updatedUser, user, id }) {
         })
             .then(res => {
                 if (res.ok) {
-                    res.json().then((data) => (setAdded(true), setLoading(false), userUpdate(data)))
+                    res.json().then((data) => (setUser(data),setAdded(true), setLoading(false),setShow(false)))
                 } else {
                     res.json().then((errorData) => setErrors(errorData.errors))
                 }
@@ -73,6 +73,7 @@ function EditProfile({ updatedUser, user, id }) {
 
 
     }
+    console.log(img)
 
     const renderImage =
         img !== "" ?
@@ -98,7 +99,7 @@ function EditProfile({ updatedUser, user, id }) {
                     <br></br>
                     <label>
                         <br></br>
-                        <input accept='image/png, image/jpeg, image/jpg' type="file" name="img_url" placeholder="Image Url" onChange={handleFile} />
+                        <input accept='image/png, image/jpeg, image/jpg' type="file"  name="img_url" placeholder="Image Url" onChange={handleFile} />
                         <br></br>
                         <br></br>
                         {renderImage}

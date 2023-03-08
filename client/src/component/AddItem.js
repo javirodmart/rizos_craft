@@ -19,13 +19,15 @@ const AddItem = ({ handelNewItem,item }) => {
     })
 
     function handleFile(e) {
-        const file = e.target.files[0]
-        const reader = new FileReader()
+        e.preventDefault()
+        setImg(e.target.value)
+        // const file = e.target.files[0]
+        // const reader = new FileReader()
 
-        reader.onload = (e) => {
-            setImg(e.target.result)
-        }
-        reader.readAsDataURL(file)
+        // reader.onload = (e) => {
+        //     setImg(e.target.result)
+        // }
+        // reader.readAsDataURL(file)
     }
    
 
@@ -114,7 +116,7 @@ const AddItem = ({ handelNewItem,item }) => {
                     <br></br>
                     <label>
                         <br></br>
-                        <input accept='image/png, image/jpeg, image/jpg' type="file" name="img_url" placeholder="Image Url" onChange={handleFile} />
+                        <input accept='image/png, image/jpeg, image/jpg' type="text" name="img_url" placeholder="Image Url" onChange={handleFile} />
                         <br></br>
                         <br></br>
                         {renderImage}

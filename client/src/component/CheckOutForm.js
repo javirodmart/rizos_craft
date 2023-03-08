@@ -1,102 +1,260 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import {
-  PaymentElement,
-  LinkAuthenticationElement,
+  CardElement,
   useStripe,
-  useElements
+  useElements,
+  AddressElement
 } from "@stripe/react-stripe-js";
+import CartItem from "./CartItem";
+import { Link } from "react-router-dom";
 
-function CheckOutForm() {
+export default function CheckOutForm({  handleDeleteCart }) {
+  const user = useContext(UserContext)
+
+  const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState([]);
   const stripe = useStripe();
+  const [total, setTotal] = useState([])
   const elements = useElements();
+  const [userCarts, setUserCarts] = useState()
+  const [address, setAddress] = useState([])
+  const [state,setState] = useState()
 
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
-
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
-
-    if (!clientSecret) {
-      return;
-    }
-
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setMessage("Payment succeeded!");
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
-      }
-    });
-  }, [stripe]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
-
-    setIsLoading(true);
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:4000/",
+  
+  function handleCharge() {
+    fetch(`/charges`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
       },
-    });
+      body: JSON.stringify({
+        id: total
+      }),
+    })
+      .then(res => {
+        if (res.ok) {
+          res.json().then((data) => (console.log(data), setClientSecret(data.client_secret)))
+        } else {
+          res.json().then((errorData) => console.log)
+        }
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
-    } else {
-      setMessage("An unexpected error occurred.");
-    }
-
-    setIsLoading(false);
-  };
-
-  const paymentElementOptions = {
-    layout: "tabs"
+      })
   }
 
+  useEffect(() => {
+    fetch(`/user_carts/${user.user.id}`)
+      .then(res => res.json())
+      .then(data => setUserCarts(data))
+  }, [])
+
+  function handleDeleteCart(deleteCart) {
+    const updatedArray = userCarts.filter((items) => {
+      return items.id !== deleteCart
+    })
+    setUserCarts(updatedArray)
+  }
+  function handleDeleteTotal(deleteTotal) {
+    const updatedArray = total.filter((items) => {
+      return items !== deleteTotal
+    })
+    setTotal(updatedArray)
+  }
+
+  const cardStyle = {
+    style: {
+      base: {
+
+        fontFamily: 'Arial, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#32325d"
+        }
+      },
+      invalid: {
+        fontFamily: 'Arial, sans-serif',
+        color: "#eee",
+        iconColor: "#eee"
+      }
+    }
+  };
+  const cartId = user.user.carts
+  function handleAddressPost() {
+    fetch(`/users/${user.user.id}`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        state: address.state,
+        city: address.city,
+        line1: address.line1,
+        line2: address.line2,
+        postal_code: address.postal_code,
+        country: address.country
+      }),
+    })
+      .then(res => {
+        if (res.ok) {
+          res.json().then((data) => console.log(data))
+        } else {
+          res.json().then((errorData) => console.log(errorData.errors))
+        }
+
+      })
+  }
+
+  
+  const handleChange = async (event) => {
+
+    
+    // Listen for changes in the CardElement
+    // and display any errors as the customer types their card details
+
+    setDisabled(event.empty);
+    setError(event.error ? event.error.message : "");
+    handleAddressPost()
+    handleCharge()
+  };
+ 
+
+  const handleSubmit = async ev => {
+    ev.preventDefault();
+   handleAddressPost()
+   handleCharge()
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    });
+
+
+
+    if (payload.error) {
+      setError(`Payment failed ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setError(null);
+      setProcessing(false);
+      setSucceeded(true);
+    }
+
+    cartId.map((cart) => {
+
+      fetch(`/purchases`, {
+        method: "Post",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user_id: user.user.id,
+          item_id: cart.item.id,
+        }),
+      }).then(res => {
+        if (res.ok) {
+          res.json().then((data) => console.log(data))
+        } else {
+          res.json().then((errorData) => console.log(errorData.errors))
+        }
+
+      })
+
+    })
+
+
+
+  };
+  console.log(cartId.length)
+  const userInfo = userCarts
+  function handleTotal() {
+    fetch(`/total/${user.user.id}`)
+      .then(r => r.json())
+      .then(data => setTotal(data))
+  }
+  useEffect(() => {
+    handleTotal()
+  }, [])
+
+  const options = {
+    mode: 'shipping',
+
+  };
+  console.log(address)
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
+    <form className="checkout-form" id="payment-form" onSubmit={handleSubmit}>
+      <div>
+        {userCarts && userCarts.map((e) => {
+          const cartId = user.user.carts.id
+          function handleDelete() {
+            fetch(`/carts/${e.id}`, { method: "DELETE" })
+            handleTotal()
+            handleDeleteCart(e.id)
+
+          }
+
+          return (
+            <>
+              <div className="checkout-item">
+                <div className="checkout-img">
+                  <img className="checkout-img" src={e.img_url} />
+                </div>
+                <div className="checkout-info">
+                  <h1>{e.name}</h1>
+                  <h4>{e.description}</h4>
+                  <h6>${e.price}</h6>
+                  <button onClickCapture={handleDelete}>Remove From Checkout</button>
+                </div>
+
+              </div>
+
+            </>
+
+          )
+        })}
+        <h3>Total: ${total}</h3>
+        <AddressElement options={options} onChange={(event) => {
+
+          // Extract potentially complete address
+          setAddress(event.value.address);
+          handleAddressPost()
+         
+
+
+        }} />
+         {address.state && address.city && address.line1 && address.postal_code ? <div className="card-element">
+         <CardElement id="card-element" options={cardStyle} onChange={handleChange} />
+         <button
+        disabled={processing || disabled || succeeded}
+        id="submit"
+      >
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {processing ? (
+            <div className="spinner" id="spinner"></div>
+          ) : (
+            "Pay now"
+          )}
         </span>
       </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+        </div> :null} 
+        
+      </div>
+     
+      {/* Show any error that happens when processing the payment */}
+      {error && (
+        <div className="card-error" role="alert">
+          {error}
+        </div>
+      )}
+      {/* Show a success message upon completion */}
+      <h1 className={succeeded ? "result-message" : "result-message hidden"}>
+        {user.user.first_name} Payment succeeded, Check Your Purchase in Your <Link to="/">Home</Link> Page
+      </h1>
     </form>
   );
 }
-export default CheckOutForm

@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
     skip_before_action :authorized_user, only:[:create]
 
     def index
-        render json: Wine.all,except: [:created_at, :updated_at]
+        render json: User.all,except: [:created_at, :updated_at]
     end
 
 
@@ -15,10 +15,10 @@ class SessionsController < ApplicationController
             render json: {errors: "Incorrect Username or Password"}, status: :unauthorized
         end
 
-        def destroy
-            session.delete :user_id
-            head :no_content
-        end
-
+        
+    end
+    def destroy
+        session.delete :user_id
+        head :no_content
     end
 end
