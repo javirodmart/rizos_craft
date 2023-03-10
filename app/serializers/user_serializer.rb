@@ -4,7 +4,9 @@ class UserSerializer < ActiveModel::Serializer
    :line1,
    :line2,
    :postal_code,
-  :country,:admin
+  :country,
+  :admin,
+  :item_rating
   has_many :items,include: :cart
   has_many :carts,include: :items
  

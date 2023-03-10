@@ -22,4 +22,6 @@ Rails.application.routes.draw do
 
   delete "/logout", to: "sessions#destroy"
 
+  patch "/users/:id/update_rating/:id", to: "purchases#update_rating"
+
 end

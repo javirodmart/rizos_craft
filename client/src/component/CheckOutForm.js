@@ -158,13 +158,18 @@ export default function CheckOutForm({  handleDeleteCart }) {
         }),
       }).then(res => {
         if (res.ok) {
-          res.json().then((data) => console.log(data))
+          res.json().then((data) => (console.log(data),handleDelete()
+          ))
         } else {
           res.json().then((errorData) => console.log(errorData.errors))
         }
 
       })
-
+      function handleDelete() {
+        fetch(`/carts/${cart.id}`, { method: "DELETE" })
+        handleTotal()
+        handleDeleteCart(cart.id)
+    }
     })
 
 

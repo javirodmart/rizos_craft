@@ -29,15 +29,17 @@ const Navigation = ({ itemsNumber, totalPrice, updateUser, userCarts, handleDele
     const navInfo = [
         {
             id: 1,
-            id2: 2,
             path: `/`,
             name: `Home`
         },
         {
-            id: 3,
-            id2: 4,
+            id: 2,
             path: `/all_items`,
             name: `Items`,
+        },{
+            id: 3,
+            path: `/contact`,
+            name: `Contact`,
         }
     ]
     // if (itemsNumber === 1) {

@@ -15,20 +15,24 @@ const Home = (handelUpdatedUser) => {
     const img_url = user.user.img_url
     const [userPurchase, setUserPurchase] = useState([])
     const [showPurchase, setShowPurchase] = useState()
-    // console.log(user)
+    const userId =user.user.id
+
+    function getUserPurchase(){
+        fetch(`user_purchases/${userId}`)
+        .then(r => r.json())
+        .then(data => (setUserPurchase(data)))
+    }
     function handleClick(){
         setShowPurchase(!showPurchase)
-         fetch(`user_purchases/1`)
-            .then(r => r.json())
-            .then(data => (setUserPurchase(data)))
+        getUserPurchase()
     }
 
     useEffect(() => {
-        fetch(`user_purchases/1`)
-            .then(r => r.json())
-            .then(data => (setUserPurchase(data),console.log(data)))
+       getUserPurchase()
 
     }, [])
+   
+    
 
     const purchaseArray = userPurchase.length && userPurchase.map((purchase) => {
         const purchase_item = purchase.item
@@ -37,10 +41,15 @@ const Home = (handelUpdatedUser) => {
             price={purchase_item.price}
             image={purchase_item.img_url}
             description={purchase_item.description}
+            id={purchase.id}
+            rating={purchase.item_rating}
+            getUserPurchase={getUserPurchase}
+            userId={userId}
+            timestamp={purchase.created_at}
+
         />
     })
 
-    console.log(user)
 
     return (
         <>

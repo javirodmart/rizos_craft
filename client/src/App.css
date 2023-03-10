@@ -509,3 +509,36 @@ button{
   text-align: center;
   margin-bottom: 5px;
 }
+
+.on {
+  color: #000;
+  content: "🖤";
+}
+.off {
+  color: #ccc;
+  content: "❤️";
+}
+
+input[type="radio"]{
+  display: none;
+}
+.star{
+  cursor: pointer;
+  transition: color 200ms;
+}
+.contact{
+  text-align: center;
+}
+.sent {
+  color: #68A691;
+  text-align: center;
+}
+
+.sent-hidden {
+  display: none;
+}
+
+.not-sent {
+  color: red;
+  text-align: center;
+}

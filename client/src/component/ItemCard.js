@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react"
 import { Card, Button } from "react-bootstrap"
 import { Link, useHistory } from "react-router-dom"
 import { UserContext } from "../context/UserContext"
+import Rating from "./Rating"
 
 
 
@@ -12,6 +13,8 @@ const ItemCard = ({ items, id, name, price, image, description, handleDeleteItem
     const [added, setAdded] = useState(false)
     const [toggle, setToggle] = useState(false);
     const [heart, setHeart] = useState(false)
+    const [rating,setRating]= useState()
+const [hover, setHover] = useState()
     const [formData, setFormData] = useState({
         user_id: user.user.id,
         item_id: items.id,
@@ -61,9 +64,7 @@ const ItemCard = ({ items, id, name, price, image, description, handleDeleteItem
                         <Card.Text> ${price} </Card.Text>
                         <Card.Text> {description} </Card.Text>
 
-                        <div className="rating">
                        
-                        </div>
 
                         <div className="item-button">
                             <Link to="/items"> <button onClick={handleAdd} > Add To Cart </button></Link>

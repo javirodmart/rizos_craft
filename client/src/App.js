@@ -14,6 +14,7 @@ import CartItem from './component/CartItem';
 import Payment from './component/Cart';
 import Pay from './component/pay';
 import Cart from './component/Cart';
+import { Contact } from './component/Contact';
 
 
 
@@ -115,8 +116,11 @@ function App() {
           </Route>
 
           <Route path="/checkout">
-
             <Pay userCarts={userCarts} />
+          </Route>
+
+          <Route path="/contact">
+            <Contact />
           </Route>
 
         </Switch>
