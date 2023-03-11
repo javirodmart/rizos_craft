@@ -159,6 +159,7 @@ form input[type=submit]:hover,
   width: fit-content;
   float: left;
   clear: none;
+  margin-left: 500px;
 }
 
 .user-img-card {
