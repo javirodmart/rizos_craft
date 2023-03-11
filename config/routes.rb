@@ -24,4 +24,6 @@ Rails.application.routes.draw do
 
   patch "/users/:id/update_rating/:id", to: "purchases#update_rating"
 
+  get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
+
 end
