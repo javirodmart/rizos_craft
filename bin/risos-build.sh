@@ -4,7 +4,7 @@
 
  #front end build
  rm -rf public
- npm intall --prefix client && npm run build --prefix client 
+ npm install --prefix client && npm run build --prefix client 
  cp -a client/build/. public/
 
 #backend build commands
