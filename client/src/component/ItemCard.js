@@ -14,6 +14,7 @@ const ItemCard = ({ items, id, name, price, image, description, handleDeleteItem
     const [toggle, setToggle] = useState(false);
     const [heart, setHeart] = useState(false)
     const [rating,setRating]= useState()
+    const [quality,setQuality] = useState(0)
 const [hover, setHover] = useState()
     const [formData, setFormData] = useState({
         user_id: user.user.id,
@@ -67,6 +68,10 @@ const [hover, setHover] = useState()
                        
 
                         <div className="item-button">
+                            <input onChange={(e)=>{setQuality(e.target.value)}} type="range" min="0" max="5" /> 
+                            <br></br>
+                            QTY: {quality}
+                            <br></br>
                             <Link to="/items"> <button onClick={handleAdd} > Add To Cart </button></Link>
                             {user.user.admin ? <button onClick={deleteItem} > Delete Item </button> : null}
 

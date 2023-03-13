@@ -32,9 +32,15 @@ const Home = (handelUpdatedUser) => {
 
     }, [])
    
-    
+    const crafts = {
+        color:'rgba(52, 250, 68, 1)'
+    }
 
-    const purchaseArray = userPurchase.length && userPurchase.map((purchase) => {
+    const purchaseArray = userPurchase? 
+    <>
+<h1>No Purchases Yet</h1>
+ <h2>Check out our handmade <Link className="craft-link" to="all_items" >  Crafts</Link> </h2>
+    </> :  userPurchase.map((purchase) => {
         const purchase_item = purchase.item
         return <UserPurchases
             name={purchase_item.name}
@@ -90,10 +96,10 @@ const Home = (handelUpdatedUser) => {
 
             </div>
         
-                 <button className="purchase-button" onClick={handleClick}>Past purchases</button>
      
            
             <div className="purchases-container ">
+                 <button className="purchase-button" onClick={handleClick}>Past purchases</button>
                {showPurchase ? purchaseArray : null }
             </div>
                 
