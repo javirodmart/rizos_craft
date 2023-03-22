@@ -3,9 +3,9 @@
  set -o errexit
 
  #front end build
- rm -rf public
- npm install --prefix client && npm run build --prefix client 
- cp -a client/build/. public/
+#  rm -rf public
+#  npm install --prefix client && npm run build --prefix client 
+#  cp -a client/build/. public/
 
 #backend build commands
 bundle install
